@@ -1,0 +1,371 @@
+/* --- Global Styles --- */
+body {
+    font-family: 'Kantumruy Pro', sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- ### ម៉ឺនុយ (Header Styles) ### --- */
+.main-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-title .title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #0056b3;
+}
+
+.main-nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    padding: 10px 5px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: #0056b3;
+    border-bottom-color: #0056b3;
+}
+
+.mobile-nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.mobile-nav-toggle svg {
+    fill: #333;
+}
+/* --- ### ចប់ផ្នែក Nav Links ### --- */
+
+
+/* --- ### ផ្នែក Controls ក្នុង Header ### --- */
+.controls-header-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0px 20px 20px 20px; 
+}
+
+.controls-header-wrapper .controls {
+    margin-bottom: 0;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap; 
+}
+/* --- ### ចប់ផ្នែក Controls ### --- */
+
+
+/* --- ### ផ្នែកเนื้อหาหลัก (Main Content) ### --- */
+main {
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 25px; 
+    /* ### UPDATE: បន្ថែម Position Relative សម្រាប់ Swiper ### */
+    position: relative;
+    overflow: hidden; /* ការពារ Swiper កុំឱ្យហៀរ */
+}
+
+#searchInput {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    font-family: 'Kantumruy Pro', sans-serif;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    flex: 2;
+    min-width: 250px;
+}
+
+#searchInput:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0,123,255,0.25);
+    outline: none;
+}
+
+#dateDropdown {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    font-family: 'Kantumruy Pro', sans-serif;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #fff;
+    flex: 1;
+    min-width: 200px;
+}
+
+#dateDropdown:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0,123,255,0.25);
+    outline: none;
+}
+
+.table-wrapper {
+    overflow-x: auto; 
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+thead th {
+    background-color: #0056b3;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f0f8ff;
+}
+
+/* --- ### CSS សម្រាប់ Card (លាក់លើ Desktop) ### --- */
+#card-view-container {
+    display: none; /* លាក់ Card នៅលើ Desktop */
+}
+
+.data-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 15px; /* រក្សាគម្លាតរវាង Card ក្នុង Slide តែមួយ */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    padding: 15px;
+    transition: box-shadow 0.3s;
+}
+/* ### UPDATE: ដក Margin របស់ Card ចុងក្រោយក្នុង Slide ### */
+.swiper-slide .data-card:last-child {
+    margin-bottom: 0;
+}
+
+.data-card:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.card-name {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #0056b3;
+}
+
+.card-id {
+    font-size: 0.9em;
+    color: #555;
+    background-color: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.card-body p {
+    margin: 8px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95em;
+}
+
+.card-body p strong {
+    color: #333;
+    margin-right: 10px;
+}
+.card-body p span {
+    color: #555;
+    text-align: right;
+}
+/* --- ### ចប់ CSS Card ### --- */
+
+
+/* --- ### CSS ថ្មីសម្រាប់ SWIPER ### --- */
+.card-swiper {
+    width: 100%;
+    height: auto;
+    /* បន្ថែម padding ខាងក្រោមសម្រាប់ Pagination Dots */
+    padding-bottom: 40px !important; 
+    /* ត្រូវប្រើ !important ដើម្បីឈ្នះ Swiper's default */
+}
+
+.swiper-slide {
+    height: auto; /* កម្ពស់ស្លាយ ស្វ័យប្រវត្តិ តាម Card ទាំង 6 */
+    padding: 0 5px; /* ទុកគម្លាតសងខាងបន្តិច */
+    box-sizing: border-box;
+}
+
+/* កំណត់ពណ៌ Theme របស់ Swiper ឱ្យដូចពណ៌ Header */
+:root {
+    --swiper-theme-color: #0056b3;
+    --swiper-navigation-size: 30px;
+}
+
+.swiper-pagination-bullet-active {
+    background: var(--swiper-theme-color);
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: var(--swiper-theme-color);
+    /* ដាក់ស្រមោលបន្តិចឱ្យងាយមើល */
+    filter: drop-shadow(0px 0px 2px rgba(255,255,255,0.7));
+}
+/* --- ### ចប់ CSS SWIPER ### --- */
+
+
+.loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #007bff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.no-results {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-style: italic;
+}
+
+
+/* --- ### RESPONSIVE DESIGN (Update) ### --- */
+@media (max-width: 768px) {
+    
+    .main-nav {
+        display: none; 
+        position: absolute;
+        top: 61px;
+        left: 0;
+        right: 0;
+        background-color: #ffffff;
+        border-bottom: 1px solid #e0e0e0;
+        box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+    }
+    
+    .main-nav.nav-visible { display: block; } 
+    .main-nav ul { flex-direction: column; gap: 0; }
+    .main-nav li { width: 100%; }
+    .main-nav a { display: block; padding: 15px 20px; border-bottom: 1px solid #f0f0f0; }
+    .main-nav a:hover, .main-nav a.active { background-color: #f9f9f9; border-bottom-color: #f0f0f0; }
+    
+    .mobile-nav-toggle { display: block; }
+    
+    .header-container { padding: 10px 15px; }
+
+    
+    /* លាក់ Controls ក្នុង Menu តាម Default */
+    .controls-header-wrapper {
+        display: none;
+        padding: 15px;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    /* បង្ហាញ Controls ពេលចុច Menu */
+    .controls-header-wrapper.controls-visible {
+        display: block;
+    }
+    
+    .controls-header-wrapper.controls-visible .controls {
+        flex-direction: column;
+    }
+
+    .controls-header-wrapper.controls-visible #searchInput,
+    .controls-header-wrapper.controls-visible #dateDropdown {
+        min-width: 100%;
+    }
+
+    
+    main {
+        padding: 10px;
+    }
+    
+    .container {
+        /* ### UPDATE: ដក Padding ចេញ ដើម្បីឱ្យ Swiper ពេញ ### */
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        background-color: transparent; 
+        box-shadow: none;
+    }
+    
+    /* --- ### UPDATE សំខាន់ ### --- */
+    /* លាក់តារាង (Table) នៅលើ Mobile */
+    .table-wrapper {
+        display: none;
+    }
+    
+    /* បង្ហាញ Card View (Swiper) នៅលើ Mobile */
+    #card-view-container {
+        display: block;
+    }
+    /* --- ### ចប់ Update ### --- */
+}

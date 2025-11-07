@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Support Attendance Report</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <link rel="stylesheet" href="style.css">
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="icon-menu" viewBox="0 0 24 24">
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+        </symbol>
+    </svg>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="main-header">
+        
+        <div class="header-container">
+            <div class="logo-title">
+                <span class="title">IT Support Report</span>
+            </div>
+            
+            <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+                <svg width="24" height="24"><use href="#icon-menu"></use></svg>
+            </button>
+
+            <nav class="main-nav">
+                </nav>
+        </div>
+
+        <div class="controls-header-wrapper" id="mobile-collapsible-controls">
+            
+            <div class="controls">
+                <input type="text" id="searchInput" placeholder="ស្វែងរកតាមឈ្មោះ ឬ ID...">
+                <select id="dateDropdown"></select>
+            </div>
+        </div>
+
+    </header>
+    <main>
+        <div class="container">
+            
+            <div id="loader" class="loader"></div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ល.រ</th>
+                            <th>ឈ្មោះ (Name)</th>
+                            <th>ID បុគ្គលិក</th>
+                            <th>ស្កេនចូល (Check In)</th>
+                            <th>ស្កេនចេញ (Check Out)</th>
+                            <th>ថ្ងៃដែលបានស្កេន (Scan Date)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        </tbody>
+                </table>
+            </div>
+            
+            <div id="card-view-container">
+                <div class="swiper card-swiper">
+                    <div class="swiper-wrapper">
+                        </div>
+                    
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+            
+            <div id="no-results" class="no-results" style="display: none;">
+                មិនមានទិន្នន័យត្រូវគ្នានឹងការស្វែងរកទេ។
+            </div>
+        </div>
+    </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <script src="script.js"></script>
+    
+    <script>
+        const navToggle = document.querySelector('.mobile-nav-toggle');
+        const mainNav = document.querySelector('.main-nav');
+        const controlsHeader = document.getElementById('mobile-collapsible-controls');
+        
+        navToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('nav-visible');
+            controlsHeader.classList.toggle('controls-visible');
+        });
+    </script>
+</body>
+</html>
