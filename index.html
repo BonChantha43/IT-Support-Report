@@ -3,17 +3,463 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Support Attendance Report</title>
+    <title>📊 របាយការណ៍វត្តមាន IT Support</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
-    <link rel="stylesheet" href="style.css">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="icon-menu" viewBox="0 0 24 24">
             <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
         </symbol>
     </svg>
-    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="icon-close" viewBox="0 0 24 24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </symbol>
+    </svg>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* --- Global Styles --- */
+        body {
+            font-family: 'Kantumruy Pro', sans-serif;
+            background-color: #f0f2f5; /* ផ្ទៃខាងក្រោយថ្មី */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* --- ### ម៉ឺនុយ (Header Styles) ### --- */
+        .main-header {
+            background-color: #ffffff; 
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px; /* កែសម្រួល Padding */
+        }
+
+        .logo-title .title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0056b3;
+        }
+
+        .mobile-nav-toggle {
+            display: none; /* លាក់ដោយ Default លើ Desktop */
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            line-height: 0;
+        }
+
+        .mobile-nav-toggle svg {
+            fill: #333;
+            width: 28px;
+            height: 28px;
+            transition: transform 0.3s;
+        }
+        
+        /* --- Controls ក្នុង Header (Desktop Default) --- */
+        .controls-header-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 20px 20px; 
+            background-color: #ffffff;
+        }
+
+        .controls-header-wrapper .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap; 
+        }
+        
+        #searchInput, #dateDropdown {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: 'Kantumruy Pro', sans-serif;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            flex: 1;
+            min-width: 200px;
+            background-color: #fff;
+        }
+
+        #searchInput:focus, #dateDropdown:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0,123,255,0.25);
+            outline: none;
+        }
+        /* --- ចប់ផ្នែក Controls --- */
+
+        /* --- Main Content --- */
+        main {
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); 
+            padding: 25px; 
+            position: relative;
+            overflow: hidden; 
+        }
+
+        /* --- Stats Section --- */
+        .stats-summary {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 220px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            cursor: default;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        
+        .stat-card h4 {
+            margin-top: 0;
+            font-size: 1em;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .stat-card .value {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin: 8px 0 0;
+        }
+
+        .stat-complete { background-color: #e6ffed; border: 1px solid #c3e6cb; }
+        .stat-complete .value { color: #28a745; }
+
+        .stat-checkin { background-color: #fff3cd; border: 1px solid #ffeeba; }
+        .stat-checkin .value { color: #ffc107; }
+
+        .stat-incomplete { background-color: #f8d7da; border: 1px solid #f5c6cb; }
+        .stat-incomplete .value { color: #dc3545; }
+
+
+        .table-wrapper { overflow-x: auto; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+
+        th, td { padding: 15px 18px; text-align: left; border-bottom: 1px solid #e9ecef; }
+
+        thead th {
+            background-color: #007bff;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        tbody tr:nth-child(even) { background-color: #f7f9fb; }
+        tbody tr:hover { background-color: #e9f7ff; }
+
+        /* --- Card View (Mobile) --- */
+        #card-view-container { display: none; } 
+
+        .data-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 15px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .card-name { font-size: 1.1em; font-weight: 600; color: #0056b3; }
+        .card-id { font-size: 0.9em; color: #fff; background-color: #007bff; padding: 4px 8px; border-radius: 4px; }
+
+        .card-body p { margin: 8px 0; display: flex; justify-content: space-between; font-size: 0.95em; }
+        .card-body p strong { color: #333; font-weight: 500; margin-right: 10px; }
+        .card-body p span { color: #555; text-align: right; font-weight: 600;}
+
+
+        /* --- SWIPER CSS --- */
+        .card-swiper { width: 100%; height: auto; padding-bottom: 40px !important; }
+        .swiper-slide { height: auto; padding: 0 10px; box-sizing: border-box; }
+        :root { --swiper-theme-color: #007bff; --swiper-navigation-size: 30px; }
+        /* --- END SWIPER CSS --- */
+
+
+        .loader {
+            border: 5px solid #e0e0e0;
+            border-top: 5px solid #0056b3;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 40px auto;
+        }
+
+        /* --- RESPONSIVE DESIGN (Mobile) --- */
+        @media (max-width: 768px) {
+            
+            .header-container { padding: 15px 15px; }
+            .mobile-nav-toggle { display: block; } /* បង្ហាញ Toggle លើ Mobile */
+            
+            /* Controls លើ Mobile ពេលចុច Toggle */
+            .controls-header-wrapper {
+                padding: 15px;
+                position: absolute;
+                top: 58px; /* ក្រោម header */
+                left: 0;
+                right: 0;
+                background-color: #f7f9fb;
+                border-top: 1px solid #f0f0f0;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                display: none; /* លាក់ controls តាម default */
+            }
+
+            .controls-header-wrapper.controls-visible { display: block; }
+            
+            .controls-header-wrapper .controls { flex-direction: column; }
+            .controls-header-wrapper #searchInput, .controls-header-wrapper #dateDropdown { min-width: 100%; }
+
+            main { padding: 15px 0; } /* Remove side padding on main */
+            
+            .container {
+                padding: 15px;
+                background-color: transparent; 
+                box-shadow: none;
+            }
+
+            .stats-summary { gap: 15px; margin-bottom: 20px; }
+            .stat-card { min-width: 100%; padding: 15px; }
+            
+            /* លាក់តារាង (Table) នៅលើ Mobile */
+            .table-wrapper { display: none; }
+            
+            /* បង្ហាញ Card View (Swiper) នៅលើ Mobile */
+            #card-view-container { display: block; }
+            
+            .swiper-button-next, .swiper-button-prev { transform: translateY(-50%) scale(0.8); }
+        }
+        .stats-summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  flex: 1;
+  min-width: 200px;
+  background: #fff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card .icon-wrap {
+  font-size: 1.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.stat-card .info {
+  flex-grow: 1;
+}
+
+.stat-card .label {
+  font-size: 0.9em;
+  color: #555;
+  font-weight: 500;
+  margin: 0;
+}
+
+.stat-card .value {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 2px 0 0;
+}
+
+/* Custom colors per type */
+.stat-complete .icon-wrap {
+  background-color: #e6ffed;
+  color: #28a745;
+}
+
+.stat-checkin .icon-wrap {
+  background-color: #fff7e0;
+  color: #ffc107;
+}
+
+.stat-incomplete .icon-wrap {
+  background-color: #fdeaea;
+  color: #dc3545;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-summary {
+    flex-direction: column;
+  }
+  .stat-card {
+    min-width: 100%;
+  }
+}
+
+.stats-summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+  padding: 10px;
+}
+
+/* Card design */
+.stat-card {
+  flex: 1;
+  min-width: 220px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  border-radius: 16px 16px 0 0;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Icon circle */
+.icon-wrap {
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  font-size: 1.8em;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #ffffff2a, #ffffff08);
+}
+
+/* Text area */
+.info {
+  flex-grow: 1;
+}
+
+.label {
+  font-size: 0.92em;
+  font-weight: 600;
+  color: #555;
+  margin: 0;
+}
+
+.value {
+  font-size: 1.8em;
+  font-weight: 800;
+  margin: 4px 0 0;
+  color: #111;
+}
+
+/* === Gradient color themes === */
+.stat-complete::before {
+  background: linear-gradient(90deg, #1dd1a1, #10ac84);
+}
+.stat-complete .icon-wrap {
+  color: #10ac84;
+  box-shadow: 0 4px 10px rgba(16, 172, 132, 0.3);
+}
+
+.stat-checkin::before {
+  background: linear-gradient(90deg, #feca57, #fbc531);
+}
+.stat-checkin .icon-wrap {
+  color: #e1a500;
+  box-shadow: 0 4px 10px rgba(250, 203, 61, 0.35);
+}
+
+.stat-incomplete::before {
+  background: linear-gradient(90deg, #ff6b6b, #ee5253);
+}
+.stat-incomplete .icon-wrap {
+  color: #ee5253;
+  box-shadow: 0 4px 10px rgba(238, 82, 83, 0.35);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-summary {
+    flex-direction: column;
+  }
+  
+}
+
+
+    </style>
 </head>
 <body>
 
@@ -21,19 +467,16 @@
         
         <div class="header-container">
             <div class="logo-title">
-                <span class="title">IT Support Report</span>
+                <span class="title">📊 IT Support Report</span>
             </div>
             
-            <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+            <button class="mobile-nav-toggle" aria-label="Toggle filters" aria-expanded="false">
                 <svg width="24" height="24"><use href="#icon-menu"></use></svg>
             </button>
 
-            <nav class="main-nav">
-                </nav>
-        </div>
+            </div>
 
         <div class="controls-header-wrapper" id="mobile-collapsible-controls">
-            
             <div class="controls">
                 <input type="text" id="searchInput" placeholder="ស្វែងរកតាមឈ្មោះ ឬ ID...">
                 <select id="dateDropdown"></select>
@@ -46,6 +489,34 @@
             
             <div id="loader" class="loader"></div>
 
+            <div class="stats-summary" id="stats-summary">
+  <div class="stat-card stat-complete">
+    <div class="icon-wrap"><i class="fas fa-check-circle"></i></div>
+    <div class="info">
+      <p class="label">វត្តមានពេញលេញ</p>
+      <p class="value" id="total-complete">0</p>
+    </div>
+  </div>
+
+  <div class="stat-card stat-checkin">
+    <div class="icon-wrap"><i class="fas fa-sign-in-alt"></i></div>
+    <div class="info">
+      <p class="label">ស្កេនចូលតែប៉ុណ្ណោះ</p>
+      <p class="value" id="total-checkin">0</p>
+    </div>
+  </div>
+
+  <div class="stat-card stat-incomplete">
+    <div class="icon-wrap"><i class="fas fa-times-circle"></i></div>
+    <div class="info">
+      <p class="label">មិនពេញលេញ / អវត្តមាន</p>
+      <p class="value" id="total-incomplete">0</p>
+    </div>
+  </div>
+</div>
+
+
+            
             <div class="table-wrapper">
                 <table>
                     <thead>
@@ -59,16 +530,18 @@
                         </tr>
                     </thead>
                     <tbody id="table-body">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
             
             <div id="card-view-container">
                 <div class="swiper card-swiper">
                     <div class="swiper-wrapper">
-                        </div>
+                    </div>
                     
                     <div class="swiper-pagination"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
                 </div>
             </div>
             
@@ -80,17 +553,320 @@
     
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
-    <script src="script.js"></script>
-    
     <script>
+        // URLs នៃ CSV files របស់អ្នក
+        const dbkSheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQX5IErGt-WAufmBbFY8qT03CLrwqIaQZqznDC4gx47v4UEl3cnpy1rPsd1mJvC8ZGTwwsNW916FKh1/pub?gid=0&single=true&output=csv';
+        const ilistSheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRny6z0kXP2O7d1Yl4tUk0m9J-vo-Ebw72MZIm5Nq2veCqFu18F-0Wgj06XeKyhABjbG1jQmWyQd-Sa/pub?gid=1542294647&single=true&output=csv';
+
+        // ធាតុ DOM
+        const tableBody = document.getElementById('table-body');
+        const loader = document.getElementById('loader');
+        const searchInput = document.getElementById('searchInput');
+        const dateDropdown = document.getElementById('dateDropdown');
+        const noResultsDiv = document.getElementById('no-results');
+        const swiperWrapper = document.querySelector('#card-view-container .swiper-wrapper');
+
+        // New Stats DOM Elements
+        const totalComplete = document.getElementById('total-complete');
+        const totalCheckIn = document.getElementById('total-checkin');
+        const totalIncomplete = document.getElementById('total-incomplete');
+
+        let cardSwiper = null; 
+        let combinedData = []; 
+
+        // Function សម្រាប់ទាញ និងបំប្លែង CSV ទៅជា Array
+        async function fetchCSV(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                const text = await response.text();
+                // បំបែកដោយសញ្ញាក្បៀស
+                const rows = text.split('\n');
+                return rows.map(row => row.split(',').map(cell => cell.trim()));
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return [];
+            }
+        }
+
+        // Function សម្រាប់យកកាលបរិច្ឆេទថ្ងៃនេះ ជាទម្រង់ DD-MM-YY
+        function getTodayDateString() {
+            const today = new Date();
+            const d = String(today.getDate()).padStart(2, '0');
+            const m = String(today.getMonth() + 1).padStart(2, '0'); 
+            const y = String(today.getFullYear()).slice(-2); 
+            return `${d}-${m}-${y}`; 
+        }
+
+        // Function សម្រាប់បង្កើតជម្រើសក្នុង Dropdown
+        function populateDateDropdown(dates) {
+            dateDropdown.innerHTML = ''; 
+
+            const allOption = document.createElement('option');
+            allOption.value = "all";
+            allOption.textContent = "បង្ហាញទិន្នន័យទាំងអស់ (All Dates)";
+            dateDropdown.appendChild(allOption);
+
+            const today = getTodayDateString();
+            
+            if (dates.includes(today)) {
+                const todayOption = document.createElement('option');
+                todayOption.value = today;
+                todayOption.textContent = `ថ្ងៃនេះ (${today})`;
+                dateDropdown.appendChild(todayOption);
+            }
+
+            dates.forEach(date => {
+                if (date.trim() !== "" && date !== today) {
+                    const option = document.createElement('option');
+                    option.value = date;
+                    option.textContent = date;
+                    dateDropdown.appendChild(option);
+                }
+            });
+        }
+
+        // Function សម្រាប់ដំណើរការ និងបញ្ចូលទិន្នន័យ
+        async function init() {
+            loader.style.display = 'block';
+            
+            const [dbkData, ilistData] = await Promise.all([
+                fetchCSV(dbkSheetURL),
+                fetchCSV(ilistSheetURL)
+            ]);
+
+            if (dbkData.length <= 1 || ilistData.length <= 8) {
+                loader.style.display = 'none';
+                if (dbkData.length === 0 || ilistData.length === 0) {
+                     noResultsDiv.textContent = 'បរាជ័យក្នុងការទាញទិន្នន័យ។';
+                     noResultsDiv.style.display = 'block';
+                }
+                return; 
+            }
+
+            const allDates = new Set();
+            dbkData.slice(1).forEach(row => {
+                if (row.length > 5 && row[5]) { allDates.add(row[5]); }
+            });
+            
+            const sortedDates = [...allDates].sort((a, b) => {
+                const parseDate = (dateStr) => {
+                    const parts = dateStr.match(/(\d{2})-(\d{2})-(\d{2})/);
+                    if (!parts) return new Date(0); 
+                    const [, day, month, year] = parts.map(Number);
+                    const fullYear = (year < 70 ? 2000 + year : 1900 + year); 
+                    return new Date(fullYear, month - 1, day); 
+                };
+                return parseDate(b) - parseDate(a); 
+            });
+
+            const itSupportMap = new Map();
+            ilistData.slice(8).forEach(row => {
+                if (row.length > 11) {
+                    const id = row[4].trim(); 
+                    const department = row[6].trim(); 
+                    const name = row[11].trim(); 
+                    if (department === 'IT Support' && id) {
+                        itSupportMap.set(id, name);
+                    }
+                }
+            });
+
+            combinedData = [];
+            dbkData.slice(1).forEach(row => {
+                if (row.length > 5) {
+                    const id = row[0].trim();
+                    if (itSupportMap.has(id)) {
+                        combinedData.push({
+                            name: itSupportMap.get(id),
+                            id: id,
+                            checkIn: row[1] ? row[1].trim() : '',
+                            checkOut: row[2] ? row[2].trim() : '',
+                            scanDate: row[5].trim()
+                        });
+                    }
+                }
+            });
+
+            populateDateDropdown(sortedDates);
+            
+            const todayString = getTodayDateString();
+            if (allDates.has(todayString)) {
+                dateDropdown.value = todayString;
+            } else {
+                if (sortedDates.length > 0) {
+                     dateDropdown.value = sortedDates[0]; 
+                } else {
+                     dateDropdown.value = "all";
+                }
+            }
+            
+            loader.style.display = 'none'; 
+            applyFilters(); 
+        }
+
+        // Function: សម្រាប់គណនា និងបង្ហាញតួលេខសរុប
+        function updateStatsSummary(data) {
+            let completeCount = 0;
+            let checkInOnlyCount = 0;
+            let incompleteCount = 0; 
+
+            data.forEach(item => {
+                const hasIn = item.checkIn !== '';
+                const hasOut = item.checkOut !== '';
+
+                if (hasIn && hasOut) {
+                    completeCount++;
+                } else if (hasIn && !hasOut) {
+                    checkInOnlyCount++;
+                    incompleteCount++;
+                } else if (!hasIn && hasOut) {
+                    incompleteCount++;
+                }
+            });
+
+            totalComplete.textContent = completeCount;
+            totalCheckIn.textContent = checkInOnlyCount;
+            totalIncomplete.textContent = incompleteCount;
+        }
+
+
+        // Function សម្រាប់បង្ហាញទិន្នន័យ (ទាំង Table និង Card Swiper)
+        function renderData(data) {
+            // 1. Update Stats Summary
+            updateStatsSummary(data);
+
+            // 2. Clear old data/Destroy Swiper
+            tableBody.innerHTML = ''; 
+            swiperWrapper.innerHTML = '';
+            
+            if (cardSwiper) {
+                cardSwiper.destroy(true, true);
+                cardSwiper = null;
+            }
+
+            // 3. Check for No Results
+            if (data.length === 0) {
+                noResultsDiv.style.display = 'block';
+                return;
+            }
+            noResultsDiv.style.display = 'none';
+
+            // 4. Populate Table and Swiper Slides
+            const itemsPerSlide = 6;
+            let currentSlide = null;
+
+            data.forEach((item, i) => {
+                
+                // --- ក. បង្កើតជួរតារាង (សម្រាប់ Desktop) ---
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${i + 1}</td>
+                    <td>${item.name}</td>
+                    <td>${item.id}</td>
+                    <td>${item.checkIn || 'N/A'}</td>
+                    <td>${item.checkOut || 'N/A'}</td>
+                    <td>${item.scanDate}</td>
+                `;
+                tableBody.appendChild(row);
+
+                // --- ខ. បង្កើត Card សម្រាប់ Swiper (សម្រាប់ Mobile) ---
+                
+                if (i % itemsPerSlide === 0) {
+                    currentSlide = document.createElement('div');
+                    currentSlide.className = 'swiper-slide';
+                    swiperWrapper.appendChild(currentSlide);
+                }
+
+                const card = document.createElement('div');
+                card.className = 'data-card'; 
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="card-name">${i + 1}. ${item.name}</span>
+                        <span class="card-id">ID: ${item.id}</span>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>ស្កេនចូល:</strong> <span>${item.checkIn || 'N/A'}</span></p>
+                        <p><strong>ស្កេនចេញ:</strong> <span>${item.checkOut || 'N/A'}</span></p>
+                        <p><strong>កាលបរិច្ឆេទ:</strong> <span>${item.scanDate}</span></p>
+                    </div>
+                `;
+                
+                if (currentSlide) {
+                    currentSlide.appendChild(card);
+                }
+            });
+            
+            // 5. Initialize Swiper
+            if (data.length > 0 && window.innerWidth <= 768) { // តែងតែ init Swiper លើ Mobile
+                 cardSwiper = new Swiper('.card-swiper', {
+                    loop: false, 
+                    slidesPerView: 1, 
+                    spaceBetween: 10,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true, 
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    autoHeight: true, 
+                });
+            }
+        }
+
+        // Function: សម្រាប់ត្រងទិន្នន័យ
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedDate = dateDropdown.value;
+
+            let filteredData = combinedData;
+
+            if (selectedDate !== "all") {
+                filteredData = filteredData.filter(item => 
+                    item.scanDate === selectedDate
+                );
+            }
+
+            if (searchTerm) {
+                filteredData = filteredData.filter(item =>
+                    item.name.toLowerCase().includes(searchTerm) ||
+                    item.id.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            filteredData.sort((a, b) => a.id.localeCompare(b.id));
+
+            renderData(filteredData); 
+        }
+
+        // បន្ថែម Event Listeners
+        searchInput.addEventListener('input', applyFilters);
+        dateDropdown.addEventListener('change', applyFilters);
+
+        // Mobile Toggle Script (រក្សាក្នុង block ផ្សេង ដើម្បីភាពងាយស្រួល)
         const navToggle = document.querySelector('.mobile-nav-toggle');
-        const mainNav = document.querySelector('.main-nav');
         const controlsHeader = document.getElementById('mobile-collapsible-controls');
         
         navToggle.addEventListener('click', () => {
-            mainNav.classList.toggle('nav-visible');
             controlsHeader.classList.toggle('controls-visible');
+            const isVisible = controlsHeader.classList.contains('controls-visible');
+            navToggle.setAttribute('aria-expanded', isVisible);
+            
+            // ប្តូរ Icon
+            const iconUse = navToggle.querySelector('use');
+            if (isVisible) {
+                 iconUse.setAttribute('href', '#icon-close');
+            } else {
+                 iconUse.setAttribute('href', '#icon-menu');
+            }
         });
+
+        // ចាប់ផ្ដើម
+        init();
     </script>
 </body>
 </html>
