@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <style>
         /* --- Global Styles --- */
@@ -93,7 +92,7 @@
         #searchInput, #dateDropdown {
             padding: 12px 15px;
             border: 1px solid #ddd;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 16px;
             font-family: 'Kantumruy Pro', sans-serif;
             box-sizing: border-box;
@@ -105,7 +104,7 @@
 
         #searchInput:focus, #dateDropdown:focus {
             border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0,123,255,0.25);
+            box-shadow: 0 0 8px rgba(0,123,255,0.2);
             outline: none;
         }
         /* --- End Controls Section --- */
@@ -119,29 +118,35 @@
             max-width: 1200px;
             margin: 0 auto;
             background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); 
-            padding: 25px; 
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); 
+            padding: 30px; 
             position: relative;
-            overflow: hidden; 
         }
         
         /* Total Found Bar Style */
         #total-found {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: #0056b3;
-            padding: 10px 0;
-            margin-top: 10px;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #333;
+            padding: 15px 0;
+            margin-top: 15px;
+            border-top: 1px solid #e0e0e0;
             border-bottom: 2px solid #007bff;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #found-count {
+            color: #007bff;
+            font-size: 1.4em;
         }
         
-        /* --- Stats Section (New Style) --- */
+        /* --- Stats Section (Improved Style) --- */
         .stats-summary {
             display: flex;
             justify-content: space-between;
-            gap: 18px;
+            gap: 20px;
             flex-wrap: wrap;
             margin-bottom: 25px;
             padding: 10px;
@@ -149,98 +154,71 @@
 
         .stat-card {
             flex: 1;
-            min-width: 220px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            min-width: 280px;
+            background: #ffffff;
+            border: 1px solid #f0f0f0;
             border-radius: 16px;
-            padding: 18px 20px;
+            padding: 20px;
             display: flex;
             align-items: center;
-            gap: 18px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            gap: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .stat-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            border-radius: 16px 16px 0 0;
-        }
-
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
 
         .icon-wrap {
-            width: 54px;
-            height: 54px;
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 14px;
-            font-size: 1.8em;
+            border-radius: 16px;
+            font-size: 2em;
             flex-shrink: 0;
-            background: linear-gradient(135deg, #ffffff2a, #ffffff08);
-        }
-
-        .info {
-            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.9);
         }
 
         .label {
-            font-size: 0.92em;
-            font-weight: 600;
+            font-size: 0.95em;
+            font-weight: 500;
             color: #555;
             margin: 0;
         }
 
         .value {
-            font-size: 1.8em;
+            font-size: 2em;
             font-weight: 800;
-            margin: 4px 0 0;
+            margin: 5px 0 0;
             color: #111;
         }
 
-        /* Gradient color themes */
-        .stat-complete::before {
-            background: linear-gradient(90deg, #1dd1a1, #10ac84);
-        }
-        .stat-complete .icon-wrap {
-            color: #10ac84;
-            box-shadow: 0 4px 10px rgba(16, 172, 132, 0.3);
-        }
+        /* Color themes */
+        .stat-complete { border-left: 5px solid #10ac84; }
+        .stat-complete .icon-wrap { color: #10ac84; background-color: #e6ffed; }
+        .stat-complete .value { color: #10ac84; }
 
-        .stat-checkin::before {
-            background: linear-gradient(90deg, #feca57, #fbc531);
-        }
-        .stat-checkin .icon-wrap {
-            color: #e1a500;
-            box-shadow: 0 4px 10px rgba(250, 203, 61, 0.35);
-        }
+        .stat-checkin { border-left: 5px solid #e1a500; }
+        .stat-checkin .icon-wrap { color: #e1a500; background-color: #fff7e0; }
+        .stat-checkin .value { color: #e1a500; }
 
-        .stat-incomplete::before {
-            background: linear-gradient(90deg, #ff6b6b, #ee5253);
-        }
-        .stat-incomplete .icon-wrap {
-            color: #ee5253;
-            box-shadow: 0 4px 10px rgba(238, 82, 83, 0.35);
-        }
+        .stat-incomplete { border-left: 5px solid #ee5253; }
+        .stat-incomplete .icon-wrap { color: #ee5253; background-color: #fdeaea; }
+        .stat-incomplete .value { color: #ee5253; }
         /* --- End Stats Section --- */
 
 
         .table-wrapper { overflow-x: auto; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; border-radius: 10px; overflow: hidden; }
 
-        th, td { padding: 15px 18px; text-align: left; border-bottom: 1px solid #e9ecef; }
+        th, td { padding: 18px 20px; text-align: left; border-bottom: 1px solid #e9ecef; font-size: 0.95em; }
 
         thead th {
             background-color: #007bff;
@@ -257,9 +235,9 @@
         .data-card {
             background: #ffffff;
             border: 1px solid #e0e0e0;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-bottom: 15px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
             padding: 15px;
         }
         
@@ -272,38 +250,59 @@
             margin-bottom: 10px;
         }
 
-        .card-name { font-size: 1.1em; font-weight: 600; color: #0056b3; }
-        .card-id { font-size: 0.9em; color: #fff; background-color: #007bff; padding: 4px 8px; border-radius: 4px; }
+        .card-name { font-size: 1.2em; font-weight: 700; color: #0056b3; }
+        .card-id { font-size: 0.9em; color: #fff; background-color: #007bff; padding: 4px 8px; border-radius: 12px; }
 
-        .card-body p { margin: 8px 0; display: flex; justify-content: space-between; font-size: 0.95em; }
-        .card-body p strong { color: #333; font-weight: 500; margin-right: 10px; }
-        .card-body p span { color: #555; text-align: right; font-weight: 600;}
+        .card-body p { margin: 10px 0; display: flex; justify-content: space-between; font-size: 1em; }
+        .card-body p strong { color: #333; font-weight: 600; margin-right: 10px; }
+        .card-body p span { color: #555; text-align: right; font-weight: 500;}
 
 
         /* --- SWIPER CSS --- */
         .card-swiper { width: 100%; height: auto; padding-bottom: 40px !important; }
         .swiper-slide { height: auto; padding: 0 10px; box-sizing: border-box; }
         :root { --swiper-theme-color: #007bff; --swiper-navigation-size: 30px; }
-        /* --- END SWIPER CSS --- */
+        
+        /* Hide arrows on mobile for better UX */
+        .swiper-button-next, .swiper-button-prev { 
+            display: none !important;
+        }
 
+        /* --- Loader Overlay --- */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            border-radius: 12px;
+            transition: opacity 0.3s;
+        }
 
         .loader {
             border: 5px solid #e0e0e0;
             border-top: 5px solid #0056b3;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
-            margin: 40px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* --- RESPONSIVE DESIGN (Mobile) --- */
         @media (max-width: 768px) {
             
-            .header-container { padding: 15px 15px; }
+            .header-container { padding: 15px; }
             .mobile-nav-toggle { display: block; } 
             
-            /* Controls on Mobile when Toggle is clicked */
             .controls-header-wrapper {
                 padding: 15px;
                 position: absolute;
@@ -319,17 +318,16 @@
             .controls-header-wrapper.controls-visible { display: block; }
             
             .controls-header-wrapper .controls { flex-direction: column; }
-            .controls-header-wrapper #searchInput, .controls-header-wrapper #dateDropdown { min-width: 100%; }
 
-            main { padding: 15px 0; } 
+            main { padding: 15px; } 
             
             .container {
                 padding: 15px;
-                background-color: transparent; 
-                box-shadow: none;
+                background-color: #ffffff; /* Keep background white on mobile container */
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
             }
 
-            .stats-summary { flex-direction: column; gap: 15px; margin-bottom: 20px; }
+            .stats-summary { flex-direction: column; gap: 15px; margin-bottom: 20px; padding: 0; }
             .stat-card { padding: 15px; }
             
             /* Hide Table on Mobile */
@@ -338,7 +336,14 @@
             /* Show Card View (Swiper) on Mobile */
             #card-view-container { display: block; }
             
-            .swiper-button-next, .swiper-button-prev { transform: translateY(-50%) scale(0.8); }
+            #total-found {
+                font-size: 1em;
+                padding: 10px 0;
+                margin-top: 10px;
+            }
+            #found-count {
+                font-size: 1.2em;
+            }
         }
     </style>
 </head>
@@ -354,8 +359,7 @@
             <button class="mobile-nav-toggle" aria-label="Toggle filters" aria-expanded="false">
                 <svg width="24" height="24"><use href="#icon-menu"></use></svg>
             </button>
-
-            </div>
+        </div>
 
         <div class="controls-header-wrapper" id="mobile-collapsible-controls">
             <div class="controls">
@@ -363,12 +367,14 @@
                 <select id="dateDropdown"></select>
             </div>
         </div>
-
     </header>
+    
     <main>
         <div class="container">
             
-            <div id="loader" class="loader"></div>
+            <div id="loading-overlay" class="loading-overlay" style="display: none;">
+                <div class="loader"></div>
+            </div>
 
             <div class="stats-summary" id="stats-summary">
                 <div class="stat-card stat-complete">
@@ -397,7 +403,7 @@
             </div>
             
             <div id="total-found">
-                ចំនួនសរុបដែលបានរកឃើញ: <span id="found-count">0</span>
+                <span>ចំនួនសរុបដែលបានរកឃើញ:</span> <span id="found-count">0</span>
             </div>
 
             
@@ -441,23 +447,19 @@
     </main>
     
     
-    
     <script>
-        // URLs នៃ CSV files របស់អ្នក
         const dbkSheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQX5IErGt-WAufmBbFY8qT03CLrwqIaQZqznDC4gx47v4UEl3cnpy1rPsd1mJvC8ZGTwwsNW916FKh1/pub?gid=0&single=true&output=csv';
         const ilistSheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRny6z0kXP2O7d1Yl4tUk0m9J-vo-Ebw72MZIm5Nq2veCqFu18F-0Wgj06XeKyhABjbG1jQmWyQd-Sa/pub?gid=1542294647&single=true&output=csv';
 
-        // ធាតុ DOM
         const tableBody = document.getElementById('table-body');
-        const loader = document.getElementById('loader');
+        const loadingOverlay = document.getElementById('loading-overlay');
         const searchInput = document.getElementById('searchInput');
         const dateDropdown = document.getElementById('dateDropdown');
         const noResultsDiv = document.getElementById('no-results');
         const noDataRow = document.getElementById('no-data-row'); 
         const swiperWrapper = document.querySelector('#card-view-container .swiper-wrapper');
-        const foundCountSpan = document.getElementById('found-count'); // Total Found
+        const foundCountSpan = document.getElementById('found-count');
 
-        // Stats DOM Elements
         const totalComplete = document.getElementById('total-complete');
         const totalCheckIn = document.getElementById('total-checkin');
         const totalIncomplete = document.getElementById('total-incomplete');
@@ -465,7 +467,10 @@
         let cardSwiper = null; 
         let combinedData = []; 
 
-        // Function សម្រាប់ទាញ និងបំប្លែង CSV ទៅជា Array
+        function showLoading(show) {
+            loadingOverlay.style.display = show ? 'flex' : 'none';
+        }
+
         async function fetchCSV(url) {
             try {
                 const response = await fetch(url);
@@ -473,7 +478,6 @@
                     throw new Error(`Network response was not ok: ${response.statusText}`);
                 }
                 const text = await response.text();
-                // បំបែកដោយសញ្ញាក្បៀស (Handle commas within quotes)
                 const rows = text.split('\n');
                 return rows.map(row => row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(cell => cell.trim().replace(/"/g, ''))); 
             } catch (error) {
@@ -482,7 +486,6 @@
             }
         }
 
-        // Function សម្រាប់យកកាលបរិច្ឆេទថ្ងៃនេះ ជាទម្រង់ DD-MM-YY
         function getTodayDateString() {
             const today = new Date();
             const d = String(today.getDate()).padStart(2, '0');
@@ -491,7 +494,14 @@
             return `${d}-${m}-${y}`; 
         }
 
-        // Function សម្រាប់បង្កើតជម្រើសក្នុង Dropdown
+        function parseDateString(dateStr) {
+            const parts = dateStr.match(/(\d{2})-(\d{2})-(\d{2})/);
+            if (!parts) return new Date(0); 
+            const [, day, month, year] = parts.map(Number);
+            const fullYear = (year < 70 ? 2000 + year : 1900 + year); 
+            return new Date(fullYear, month - 1, day); 
+        }
+
         function populateDateDropdown(dates) {
             dateDropdown.innerHTML = ''; 
 
@@ -519,9 +529,8 @@
             });
         }
 
-        // Function សម្រាប់ដំណើរការ និងបញ្ចូលទិន្នន័យ
         async function init() {
-            loader.style.display = 'block';
+            showLoading(true);
             
             const [dbkData, ilistData] = await Promise.all([
                 fetchCSV(dbkSheetURL),
@@ -529,7 +538,7 @@
             ]);
 
             if (dbkData.length <= 1 || ilistData.length <= 8) {
-                loader.style.display = 'none';
+                showLoading(false);
                 if (dbkData.length === 0 || ilistData.length === 0) {
                     noResultsDiv.textContent = 'បរាជ័យក្នុងការទាញទិន្នន័យ។';
                     noResultsDiv.style.display = 'block';
@@ -542,16 +551,7 @@
                 if (row.length > 5 && row[5]) { allDates.add(row[5]); }
             });
             
-            const sortedDates = [...allDates].sort((a, b) => {
-                const parseDate = (dateStr) => {
-                    const parts = dateStr.match(/(\d{2})-(\d{2})-(\d{2})/);
-                    if (!parts) return new Date(0); 
-                    const [, day, month, year] = parts.map(Number);
-                    const fullYear = (year < 70 ? 2000 + year : 1900 + year); 
-                    return new Date(fullYear, month - 1, day); 
-                };
-                return parseDate(b) - parseDate(a); 
-            });
+            const sortedDates = [...allDates].sort((a, b) => parseDateString(b) - parseDateString(a));
 
             const itSupportMap = new Map();
             ilistData.slice(8).forEach(row => {
@@ -594,35 +594,30 @@
                 }
             }
             
-            loader.style.display = 'none'; 
             applyFilters(); 
+            showLoading(false);
         }
 
-        // Function: សម្រាប់គណនា និងបង្ហាញតួលេខសរុប (Stats Summary)
         function updateStatsSummary(data) {
             let completeCount = 0;
             let checkInOnlyCount = 0;
             let incompleteCount = 0; 
 
-            // ប្រើ Map សម្រាប់តាមដានតែវត្តមានតែមួយគត់ក្នុងមួយថ្ងៃសម្រាប់បុគ្គលិកម្នាក់ៗ (Unique ID per Day)
             const uniqueRecords = {};
             data.forEach(item => {
                 const key = `${item.id}_${item.scanDate}`;
                 
-                // ពិនិត្យមើលតែ Status ចុងក្រោយរបស់ ID ក្នុងថ្ងៃនោះ
                 if (!uniqueRecords[key]) {
                     uniqueRecords[key] = {
                         hasIn: item.checkIn !== '',
                         hasOut: item.checkOut !== ''
                     };
                 } else {
-                    // Update check-in/out if it's more complete
                     if (item.checkIn) uniqueRecords[key].hasIn = true;
                     if (item.checkOut) uniqueRecords[key].hasOut = true;
                 }
             });
 
-            // គណនាតាម Unique Record
             Object.values(uniqueRecords).forEach(record => {
                 if (record.hasIn && record.hasOut) {
                     completeCount++;
@@ -630,15 +625,13 @@
                     checkInOnlyCount++;
                     incompleteCount++; 
                 } else {
-                    // ករណីមិនមាន Check-in មិនរាប់ជា incomplete/absent ទេ ព្រោះទិន្នន័យនេះមានតែអ្នកស្កេន
-                    // ប៉ុន្តែសម្រាប់គោលបំណងស្ថិតិ, វានឹងរាប់ជា incomplete
                     incompleteCount++; 
                 }
             });
             
             totalComplete.textContent = completeCount;
             totalCheckIn.textContent = checkInOnlyCount;
-            // សម្រាប់ 'All Dates' គួរតែរាប់ Check-In Only តែប៉ុណ្ណោះ ព្រោះ 'incomplete' មិនអាចរាប់ Absent ពិតប្រាកដបានទេ។
+            
             if (dateDropdown.value === "all") {
                 totalIncomplete.textContent = checkInOnlyCount; 
             } else {
@@ -646,16 +639,11 @@
             }
         }
 
-
-        // Function សម្រាប់បង្ហាញទិន្នន័យ (ទាំង Table និង Card Swiper)
         function renderData(data) {
-            // 1. Update Stats Summary
             updateStatsSummary(data);
             
-            // 2. Update Total Found Count
-            foundCountSpan.textContent = data.length; // ចំនួន Record សរុបដែលបានរកឃើញ
+            foundCountSpan.textContent = data.length;
 
-            // 3. Clear old data/Destroy Swiper
             tableBody.innerHTML = ''; 
             swiperWrapper.innerHTML = '';
             noDataRow.style.display = 'none';
@@ -665,34 +653,34 @@
                 cardSwiper = null;
             }
 
-            // 4. Check for No Results
             if (data.length === 0) {
                 noResultsDiv.style.display = 'block';
-                noDataRow.style.display = 'table-row'; // បង្ហាញក្នុងតារាង
+                noDataRow.style.display = 'table-row';
                 return;
             }
             noResultsDiv.style.display = 'none';
 
-            // 5. Populate Table and Swiper Slides
             const itemsPerSlide = 6;
             let currentSlide = null;
 
             data.forEach((item, i) => {
                 
-                // --- ក. បង្កើតជួរតារាង (សម្រាប់ Desktop) ---
+                // Table Row
+                const checkInDisplay = item.checkIn || '<span style="color: #dc3545; font-weight: 600;">N/A</span>';
+                const checkOutDisplay = item.checkOut || '<span style="color: #dc3545; font-weight: 600;">N/A</span>';
+
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${i + 1}</td>
                     <td>${item.name}</td>
                     <td>${item.id}</td>
-                    <td>${item.checkIn || '<span style="color: #dc3545; font-weight: 600;">N/A</span>'}</td>
-                    <td>${item.checkOut || '<span style="color: #dc3545; font-weight: 600;">N/A</span>'}</td>
+                    <td>${checkInDisplay}</td>
+                    <td>${checkOutDisplay}</td>
                     <td>${item.scanDate}</td>
                 `;
                 tableBody.appendChild(row);
 
-                // --- ខ. បង្កើត Card សម្រាប់ Swiper (សម្រាប់ Mobile) ---
-                
+                // Card Swiper Slide
                 if (i % itemsPerSlide === 0) {
                     currentSlide = document.createElement('div');
                     currentSlide.className = 'swiper-slide';
@@ -718,7 +706,7 @@
                 }
             });
             
-            // 6. Initialize Swiper
+            // Initialize Swiper (Mobile Only)
             if (data.length > 0 && window.innerWidth <= 768) { 
                 if (!cardSwiper) {
                     cardSwiper = new Swiper('.card-swiper', {
@@ -729,10 +717,6 @@
                             el: '.swiper-pagination',
                             clickable: true, 
                         },
-                        navigation: {
-                            nextEl: '.swiper-button-next',
-                            prevEl: '.swiper-button-prev',
-                        },
                         autoHeight: true, 
                     });
                 } else {
@@ -741,7 +725,6 @@
             }
         }
 
-        // Function: សម្រាប់ត្រងទិន្នន័យ
         function applyFilters() {
             const searchTerm = searchInput.value.toLowerCase();
             const selectedDate = dateDropdown.value;
@@ -766,7 +749,6 @@
             renderData(filteredData); 
         }
 
-        // បន្ថែម Event Listeners
         searchInput.addEventListener('input', applyFilters);
         dateDropdown.addEventListener('change', applyFilters);
 
@@ -779,7 +761,6 @@
             const isVisible = controlsHeader.classList.contains('controls-visible');
             navToggle.setAttribute('aria-expanded', isVisible);
             
-            // ប្តូរ Icon
             const iconUse = navToggle.querySelector('use');
             if (isVisible) {
                 iconUse.setAttribute('href', '#icon-close');
@@ -788,7 +769,6 @@
             }
         });
 
-        // ចាប់ផ្ដើម
         init();
     </script>
 </body>
